@@ -36,7 +36,7 @@ def review(ui, repo, *paths, **opts):
   elif ui.quiet:
     args.append('--quiet')
 
-  if opts.get('issue') or opts.get('message'):
+  if not opts.get('issue') or opts.get('message'):
     args.append('--send_mail')
 
   if opts.get('revision') and opts.get('change'):
