@@ -1,10 +1,14 @@
+import BaseHTTPServer
 import os
 import re
-import subprocess
+import socket
 import sys
 import urllib
 
 from mercurial import cmdutil, error
+
+SERVER = 'https://codereview.adblockplus.org'
+UPLOADTOOL_URL = SERVER + '/static/upload.py'
 
 cmdtable = {}
 command = cmdutil.command(cmdtable)
@@ -28,7 +32,7 @@ def review(ui, repo, *paths, **opts):
     existing review request. This will always send mails for new reviews, when
     updating a review mails will only be sent if a message is given.
   '''
-  args = ['--oauth2']
+  args = ['--oauth2', '--server', SERVER]
   if ui.debugflag:
     args.append('--noisy')
   elif ui.verbose:
@@ -73,8 +77,58 @@ def review(ui, repo, *paths, **opts):
       os.path.join('~', '.hgreview_upload.py'))
   upload_path = os.path.expanduser(upload_path)
   if not os.path.exists(upload_path):
-    url = 'https://codereview.adblockplus.org/static/upload.py'
-    ui.status('Downloading {0} to {1}.\n'.format(url, upload_path))
-    urllib.urlretrieve(url, upload_path)
+    ui.status('Downloading {0} to {1}.\n'.format(UPLOADTOOL_URL, upload_path))
+    urllib.urlretrieve(UPLOADTOOL_URL, upload_path)
 
-  subprocess.call([sys.executable, upload_path] + args)
+  # Find an available port for our local server
+  issue = None
+  class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    def do_GET(self):
+      self.send_response(200)
+      self.send_header('Content-type', 'text/javascript')
+      self.end_headers()
+      self.wfile.write('location.href = "{0}";'.format(SERVER + '/' + issue))
+    def log_message(*args, **kwargs):
+      pass
+  for port in range(54770, 54780):
+    try:
+      server = BaseHTTPServer.HTTPServer(('localhost', port), RequestHandler)
+      break
+    except socket.error:
+      pass
+
+  # Modify upload tool's auth response in order to redirect to the issue
+  scope = {}
+  execfile(upload_path, scope)
+  if server:
+    scope['AUTH_HANDLER_RESPONSE'] = '''\
+<html>
+  <head>
+    <title>Authentication Status</title>
+    <script>
+    window.onload = function()
+    {
+      setInterval(function()
+      {
+        var script = document.createElement("script");
+        script.src = "http://localhost:%s/?" + (new Date().getTime());
+        document.body.appendChild(script);
+      }, 1000)
+    }
+    </script>
+  </head>
+  <body>
+    <p>
+      The authentication flow has completed. This page will redirect to your
+      review shortly.
+    </p>
+  </body>
+</html>
+''' % port
+
+  # Run the upload tool
+  issue, patchset = scope['RealMain']([upload_path] + args)
+
+  # Wait for the page to check in and retrieve issue URL
+  if server:
+    server.handle_request()
