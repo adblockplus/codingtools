@@ -52,11 +52,32 @@ def review(ui, repo, *paths, **opts):
   else:
     raise error.Abort('What should be reviewed? Either --revision or --change is required.')
 
-  if not opts.get('title') and not opts.get('issue') and opts.get('change'):
-    opts['title'] = repo[opts['change']].description()
+  if not opts.get('issue'):
+    # New issue, make sure title and message are set
+    if not opts.get('title') and opts.get('change'):
+      opts['title'] = repo[opts['change']].description()
+    if not opts.get('title'):
+      opts['title'] = ui.prompt('New review title: ', '')
+    if not opts['title'].strip():
+      raise error.Abort('No review title given.')
 
-  if not opts.get('issue') and not opts.get('reviewers'):
-    raise error.Abort('Please specify --reviewers for your new review.')
+    if not opts.get('message'):
+      opts['message'] = opts['title']
+
+    path = ui.config('paths', 'default-push') or ui.config('paths', 'default')
+    match = re.search(r'^(?:https://|ssh://hg@)(.*)', path);
+    if match:
+      opts['message'] = '{0}\n\nRepository: {1}'.format(
+        opts['message'].strip(),
+        match.group(1)
+      )
+
+    # Make sure there is at least one reviewer
+    if not opts.get('reviewers'):
+      opts['reviewers'] = ui.prompt('Reviewers (comma-separated): ', '')
+    if not opts['reviewers'].strip():
+      raise error.Abort('No reviewers given.')
+
   for opt in ('reviewers', 'cc'):
     if opts.get(opt):
       users = [u if '@' in u else u + '@adblockplus.org'
