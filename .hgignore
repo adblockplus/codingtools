@@ -1,1 +1,8 @@
-\.pyc$
+syntax: glob
+*.pyc
+*.pyo
+.tox/
+__pycache__/
+*.egg-info/
+build/
+dist/
