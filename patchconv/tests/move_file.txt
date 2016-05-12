@@ -1,0 +1,9 @@
+INPUT
+    Index: README.md
+    ===================================================================
+    rename from README.txt
+    rename to README.md
+EXPECT
+    diff --git a/README.txt b/README.md
+    rename from README.txt
+    rename to README.md

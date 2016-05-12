@@ -1,0 +1,21 @@
+INPUT
+    Index: file1.py
+    ===================================================================
+    --- a/file1.py
+    +++ b/file1.py
+    @@ -1,23 +1,12 @@
+     # comment
+
+     from __future__ import print_function
+
+    +from file3 import a, c, e, g
+EXPECT
+    diff --git a/file1.py b/file1.py
+    --- a/file1.py
+    +++ b/file1.py
+    @@ -1,23 +1,12 @@
+     # comment
+
+     from __future__ import print_function
+
+    +from file3 import a, c, e, g

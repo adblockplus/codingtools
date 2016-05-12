@@ -1,0 +1,6 @@
+INPUT
+    Index: file1.py
+    foo
+EXPECT
+    Index: file1.py
+    foo

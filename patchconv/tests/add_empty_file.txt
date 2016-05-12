@@ -1,0 +1,7 @@
+INPUT
+    Index: foo.py
+    ===================================================================
+    new file mode 100644
+EXPECT
+    diff --git a/foo.py b/foo.py
+    new file mode 100644

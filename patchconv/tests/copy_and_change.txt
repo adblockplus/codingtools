@@ -1,0 +1,23 @@
+INPUT
+    Index: README.md
+    ===================================================================
+    copy from README.txt
+    copy to README.md
+    --- a/README.txt
+    +++ b/README.md
+    @@ -1,3 +1,3 @@
+     # Bla
+
+    -Bla bla bla.
+    +Foo bar baz.
+EXPECT
+    diff --git a/README.txt b/README.md
+    copy from README.txt
+    copy to README.md
+    --- a/README.txt
+    +++ b/README.md
+    @@ -1,3 +1,3 @@
+     # Bla
+
+    -Bla bla bla.
+    +Foo bar baz.

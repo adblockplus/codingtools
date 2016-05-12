@@ -1,0 +1,15 @@
+INPUT
+    Index: foo.py
+    ===================================================================
+    new file mode 100644
+    --- /dev/null
+    +++ b/bla.py
+    @@ -0,0 +1,1 @@
+    +# A comment.
+EXPECT
+    diff --git a/foo.py b/foo.py
+    new file mode 100644
+    --- /dev/null
+    +++ b/bla.py
+    @@ -0,0 +1,1 @@
+    +# A comment.
