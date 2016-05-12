@@ -408,7 +408,7 @@ def check_quotes(logical_line, tokens, previous_logical):
                     literal = 'u' + literal
 
                 if ascii(eval(literal)) != literal:
-                    yield (start, "A110 string literal doesn't match"
+                    yield (start, "A110 string literal doesn't match "
                                   '{}()'.format(ascii.__name__))
 
         first_token = False
