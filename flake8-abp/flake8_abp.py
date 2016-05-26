@@ -284,13 +284,14 @@ class TreeVisitor(ast.NodeVisitor):
         arg = next(iter(node.args), None)
         redundant_literal = False
 
-        if isinstance(arg, ast.Lambda) and func in {'map', 'filter',
-                                                    'imap', 'ifilter',
-                                                    'itertools.imap',
-                                                    'itertools.ifilter'}:
-            self.errors.append((node, 'A104 use a comprehension '
-                                      'instead of calling {}() with '
-                                      'lambda function'.format(func)))
+        if isinstance(arg, ast.Lambda):
+            if len(node.args) == 2 and func in {'map', 'filter',
+                                                'imap', 'ifilter',
+                                                'itertools.imap',
+                                                'itertools.ifilter'}:
+                self.errors.append((node, 'A104 use a comprehension '
+                                          'instead of calling {}() with '
+                                          'lambda function'.format(func)))
         elif isinstance(arg, (ast.List, ast.Tuple)):
             if func == 'dict':
                 redundant_literal = all(isinstance(elt, (ast.Tuple, ast.List))

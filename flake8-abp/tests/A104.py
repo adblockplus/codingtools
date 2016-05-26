@@ -13,3 +13,5 @@ ifilter(lambda x: x, range(10))
 itertools.imap(lambda x: x, range(10))
 # A104
 itertools.ifilter(lambda x: x, range(10))
+
+map(lambda a, b: a or b, [0, 1], [2, 3])
