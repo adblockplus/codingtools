@@ -384,33 +384,32 @@ def check_quotes(logical_line, tokens, previous_logical):
             continue
 
         if kind == tokenize.STRING:
-            match = re.search(r'^(u)?(b)?(r)?((""")?.*)$',
+            match = re.search(r'^([rub]*)([\'"]{1,3})(.*)\2$',
                               token, re.IGNORECASE | re.DOTALL)
-            (is_unicode, is_bytes, is_raw,
-             literal, has_doc_quotes) = match.groups()
+            prefixes, quote, text = match.groups()
+            prefixes = prefixes.lower()
 
             if first_token and re.search(r'^(?:(?:def|class)\s|$)',
                                          previous_logical):
-                if not has_doc_quotes:
+                if quote != '"""':
                     yield (start, 'A109 use triple double '
                                   'quotes for docstrings')
-                elif is_unicode or is_bytes or is_raw:
+                elif prefixes:
                     yield (start, "A109 don't use u'', b'' "
                                   "or r'' for doc strings")
             elif start[0] == end[0]:
-                if is_raw:
-                    literal = re.sub(r'\\(?!{})'.format(literal[0]),
-                                     '\\\\\\\\', literal)
+                if 'r' in prefixes:
+                    if quote != "'" and not (quote == '"' and "'" in text):
+                        yield (start, 'A110 use single quotes for raw string')
+                else:
+                    prefix = 'b' if sys.version_info[0] >= 3 else 'u'
+                    if prefix not in prefixes:
+                        prefix = ''
 
-                if sys.version_info[0] >= 3:
-                    if is_bytes:
-                        literal = 'b' + literal
-                elif is_unicode:
-                    literal = 'u' + literal
-
-                if ascii(eval(literal)) != literal:
-                    yield (start, "A110 string literal doesn't match "
-                                  '{}()'.format(ascii.__name__))
+                    literal = '{0}{1}{2}{1}'.format(prefix, quote, text)
+                    if ascii(eval(literal)) != literal:
+                        yield (start, "A110 string literal doesn't match "
+                                      '{}()'.format(ascii.__name__))
 
         first_token = False
 
