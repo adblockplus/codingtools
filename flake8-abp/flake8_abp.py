@@ -376,8 +376,14 @@ check_non_default_encoding.name = 'abp-non-default-encoding'
 check_non_default_encoding.version = __version__
 
 
-def check_quotes(logical_line, tokens, previous_logical):
+def check_quotes(logical_line, tokens, previous_logical, checker_state):
     first_token = True
+
+    token_strings = [t[1] for t in tokens]
+    future_import = token_strings[:3] == ['from', '__future__', 'import']
+
+    if future_import and 'unicode_literals' in token_strings:
+        checker_state['has_unicode_literals'] = True
 
     for kind, token, start, end, _ in tokens:
         if kind == tokenize.INDENT or kind == tokenize.DEDENT:
@@ -389,27 +395,35 @@ def check_quotes(logical_line, tokens, previous_logical):
             prefixes, quote, text = match.groups()
             prefixes = prefixes.lower()
 
+            if 'u' in prefixes:
+                yield (start, 'A112 use "from __future__ import '
+                              'unicode_literals" instead of '
+                              'prefixing literals with "u"')
+
             if first_token and re.search(r'^(?:(?:def|class)\s|$)',
                                          previous_logical):
                 if quote != '"""':
                     yield (start, 'A109 use triple double '
                                   'quotes for docstrings')
-                elif prefixes:
-                    yield (start, "A109 don't use u'', b'' "
-                                  "or r'' for doc strings")
-            elif start[0] == end[0]:
-                if 'r' in prefixes:
-                    if quote != "'" and not (quote == '"' and "'" in text):
-                        yield (start, 'A110 use single quotes for raw string')
+            elif start[0] != end[0]:
+                pass
+            elif 'r' in prefixes:
+                if quote != "'" and not (quote == '"' and "'" in text):
+                    yield (start, 'A110 use single quotes for raw string')
+            else:
+                prefix = ''
+                if sys.version_info[0] >= 3:
+                    if 'b' in prefixes:
+                        prefix = 'b'
                 else:
-                    prefix = 'b' if sys.version_info[0] >= 3 else 'u'
-                    if prefix not in prefixes:
-                        prefix = ''
+                    u_literals = checker_state.get('has_unicode_literals')
+                    if 'u' in prefixes or u_literals and 'b' not in prefixes:
+                        prefix = 'u'
 
-                    literal = '{0}{1}{2}{1}'.format(prefix, quote, text)
-                    if ascii(eval(literal)) != literal:
-                        yield (start, "A110 string literal doesn't match "
-                                      '{}()'.format(ascii.__name__))
+                literal = '{0}{1}{2}{1}'.format(prefix, quote, text)
+                if ascii(eval(literal)) != literal:
+                    yield (start, "A110 string literal doesn't match "
+                                  '{}()'.format(ascii.__name__))
 
         first_token = False
 
