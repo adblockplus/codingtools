@@ -65,7 +65,9 @@ def review(ui, repo, *paths, **opts):
         if not opts.get('message'):
             opts['message'] = opts['title']
 
-        path = ui.config('paths', 'default-push') or ui.config('paths', 'default')
+        path = (ui.config('paths', 'default-push')
+                or ui.config('paths', 'default')
+                or '')
         match = re.search(r'^(?:https://|ssh://hg@)(.*)', path)
         if match:
             opts['message'] = '{0}\n\nRepository: {1}'.format(
