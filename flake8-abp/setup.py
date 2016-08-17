@@ -80,11 +80,14 @@ class TestCommand(Command):
         pass
 
     def run(self):
-        import flake8.engine
+        try:
+            import flake8.engine as api
+        except ImportError:
+            import flake8.api.legacy as api
 
         directory = os.path.dirname(__file__)
         filenames = glob.glob(os.path.join(directory, 'tests', '*.py'))
-        style_guide = flake8.engine.get_style_guide()
+        style_guide = api.get_style_guide()
         failed = False
 
         for filename in sorted(filenames):
@@ -117,10 +120,10 @@ setup(
     py_modules=['flake8_abp'],
     entry_points={
         'flake8.extension': [
-            'AXXX      = flake8_abp:ASTChecker',
-            'A109-A110 = flake8_abp:check_quotes',
-            'A111      = flake8_abp:check_redundant_parenthesis',
-            'A303      = flake8_abp:check_non_default_encoding',
+            'A    = flake8_abp:ASTChecker',
+            'A1   = flake8_abp:check_quotes',
+            'A111 = flake8_abp:check_redundant_parenthesis',
+            'A303 = flake8_abp:check_non_default_encoding',
         ],
     },
     cmdclass={'test': TestCommand}
