@@ -70,10 +70,7 @@ def review(ui, repo, *paths, **opts):
                 or '')
         match = re.search(r'^(?:https://|ssh://hg@)(.*)', path)
         if match:
-            opts['message'] = '{0}\n\nRepository: {1}'.format(
-                opts['message'].strip(),
-                match.group(1)
-            )
+            opts['base_url'] = 'https://' + match.group(1)
 
         # Make sure there is at least one reviewer
         if not opts.get('reviewers'):
@@ -87,7 +84,7 @@ def review(ui, repo, *paths, **opts):
                      for u in re.split(r'\s*,\s*', opts[opt])]
             opts[opt] = ','.join(users)
 
-    for opt in ('issue', 'title', 'message', 'reviewers', 'cc'):
+    for opt in ('issue', 'title', 'message', 'reviewers', 'cc', 'base_url'):
         if opts.get(opt, ''):
             args.extend(['--' + opt, opts[opt]])
 
