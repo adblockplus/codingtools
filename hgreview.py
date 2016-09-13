@@ -47,7 +47,8 @@ def review(ui, repo, *paths, **opts):
     if opts.get('revision') and opts.get('change'):
         raise error.Abort('Ambiguous revision range, only one of --revision and --change can be specified.')
     if opts.get('change'):
-        args.extend(['--rev', '{0}^:{0}'.format(opts['change'])])
+        rev = repo[opts['change']]
+        args.extend(['--rev', '{}:{}'.format(rev.parents()[0], rev)])
     elif opts.get('revision'):
         args.extend(['--rev', opts['revision']])
     else:
