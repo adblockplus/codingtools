@@ -26,6 +26,7 @@ command = cmdutil.command(cmdtable)
              ('', 'private', None, 'Make the review restricted to reviewers and those CCed.'),
              ('y', 'assume_yes', None, 'Assume that the answer to yes/no questions is \'yes\'.'),
              ('', 'print_diffs', None, 'Print full diffs.'),
+             ('', 'no_mail', None, 'Don\'t send an email after uploading.'),
          ], '[options] [path...]')
 def review(ui, repo, *paths, **opts):
     '''
@@ -41,7 +42,8 @@ def review(ui, repo, *paths, **opts):
     elif ui.quiet:
         args.append('--quiet')
 
-    if not opts.get('issue') or opts.get('message'):
+    if (not opts.get('no_mail') and
+        (not opts.get('issue') or opts.get('message'))):
         args.append('--send_mail')
 
     if opts.get('revision') and opts.get('change'):
@@ -75,9 +77,14 @@ def review(ui, repo, *paths, **opts):
 
         # Make sure there is at least one reviewer
         if not opts.get('reviewers'):
-            opts['reviewers'] = ui.prompt('Reviewers (comma-separated): ', '')
-        if not opts['reviewers'].strip():
-            raise error.Abort('No reviewers given.')
+            if opts.get('no_mail'):
+                ui.status('No reviewers specified, edit the review to add '
+                          'some.\n')
+            else:
+                opts['reviewers'] = ui.prompt('Reviewers (comma-separated): ',
+                                              '')
+                if not opts['reviewers'].strip():
+                    raise error.Abort('No reviewers given.')
 
     for opt in ('reviewers', 'cc'):
         if opts.get(opt):
