@@ -25,6 +25,7 @@ except ImportError:
     import __builtin__ as builtins
 
 import pkg_resources
+import flake8
 
 try:
     ascii
@@ -354,9 +355,6 @@ class TreeVisitor(ast.NodeVisitor):
 
 
 class ASTChecker(object):
-    name = 'abp'
-    version = __version__
-
     def __init__(self, tree, filename):
         self.tree = tree
 
@@ -371,9 +369,6 @@ class ASTChecker(object):
 def check_non_default_encoding(physical_line, line_number):
     if line_number <= 2 and re.search(r'^\s*#.*coding[:=]', physical_line):
         return (0, 'A303 non-default file encoding')
-
-check_non_default_encoding.name = 'abp-non-default-encoding'
-check_non_default_encoding.version = __version__
 
 
 def check_quotes(logical_line, tokens, previous_logical, checker_state):
@@ -427,9 +422,6 @@ def check_quotes(logical_line, tokens, previous_logical, checker_state):
 
         first_token = False
 
-check_quotes.name = 'abp-quotes'
-check_quotes.version = __version__
-
 
 def check_redundant_parenthesis(logical_line, tokens):
     start_line = tokens[0][2][0]
@@ -481,5 +473,13 @@ def check_redundant_parenthesis(logical_line, tokens):
 
     return []
 
-check_redundant_parenthesis.name = 'abp-redundant-parenthesis'
-check_redundant_parenthesis.version = __version__
+
+# With flake8 3, the way the entry points are register in setup.py,
+# they are recognized as a group, and the name and version is detected
+# automatically. For compatibility with flake8 2, however, we need to
+# assign the name and version to each checker individually.
+if int(flake8.__version__.split('.')[0]) < 3:
+    for checker in [ASTChecker, check_non_default_encoding,
+                    check_quotes, check_redundant_parenthesis]:
+        checker.name = 'abp'
+        checker.version = __version__

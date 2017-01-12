@@ -120,10 +120,10 @@ setup(
     py_modules=['flake8_abp'],
     entry_points={
         'flake8.extension': [
-            'A    = flake8_abp:ASTChecker',
-            'A1   = flake8_abp:check_quotes',
-            'A111 = flake8_abp:check_redundant_parenthesis',
-            'A303 = flake8_abp:check_non_default_encoding',
+            'abp.A    = flake8_abp:ASTChecker',
+            'abp.A1   = flake8_abp:check_quotes',
+            'abp.A111 = flake8_abp:check_redundant_parenthesis',
+            'abp.A303 = flake8_abp:check_non_default_encoding',
         ],
     },
     cmdclass={'test': TestCommand}
