@@ -58,15 +58,19 @@ def review(ui, repo, *paths, **opts):
 
     if not opts.get('issue'):
         # New issue, make sure title and message are set
-        if not opts.get('title') and opts.get('change'):
-            opts['title'] = repo[opts['change']].description()
-        if not opts.get('title'):
+        fulltitle = None
+
+        if not opts.get('title') and not opts.get('change'):
             opts['title'] = ui.prompt('New review title: ', '')
+        elif not opts.get('title'):
+            fulltitle = repo[opts['change']].description()
+            opts['title'] = fulltitle.rstrip().split('\n')[0]
+
         if not opts['title'].strip():
             raise error.Abort('No review title given.')
 
         if not opts.get('message'):
-            opts['message'] = opts['title']
+            opts['message'] = fulltitle or opts['title']
 
         path = (ui.config('paths', 'default-push')
                 or ui.config('paths', 'default')
