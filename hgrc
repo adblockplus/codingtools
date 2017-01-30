@@ -109,7 +109,7 @@ shelve =
 # Review extension, provides the `hg review` command that makes it easier to
 # upload reviews to codereview.adblockplus.org. You need to adjust the path
 # so that it points to hgreview.py file in this repository.
-#review = /path/to/codereview/hgreview.py
+#review = /path/to/codingtools/hgreview.py
 
 # Configuration for the pager extension. This doesn't have any effect unless
 # you enable the pager extension above.
