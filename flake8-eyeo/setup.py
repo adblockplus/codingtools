@@ -20,11 +20,7 @@ import glob
 import tokenize
 import sys
 import re
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+import subprocess
 
 from setuptools import setup, Command
 
@@ -56,19 +52,12 @@ class TestCommand(Command):
 
         return errors
 
-    def _get_reported_errors(self, filename, style_guide):
-        orig_stdout = sys.stdout
-        sys.stdout = stdout = StringIO()
+    def _get_reported_errors(self, filename):
+        output = subprocess.Popen(['flake8', filename],
+                                  stdout=subprocess.PIPE).communicate()[0]
 
-        try:
-            style_guide.check_files([filename])
-        finally:
-            sys.stdout = orig_stdout
-
-        stdout.seek(0)
         errors = set()
-
-        for line in stdout:
+        for line in output.decode('utf-8').splitlines():
             _, lineno, colno, error = line.split(':', 3)
             errors.add((int(lineno), int(colno), error.split()[0]))
 
@@ -81,19 +70,13 @@ class TestCommand(Command):
         pass
 
     def run(self):
-        try:
-            import flake8.engine as api
-        except ImportError:
-            import flake8.api.legacy as api
-
         directory = os.path.dirname(__file__)
         filenames = glob.glob(os.path.join(directory, 'tests', '*.py'))
-        style_guide = api.get_style_guide()
         failed = False
 
         for filename in sorted(filenames):
             expected = self._get_expected_errors(filename)
-            reported = self._get_reported_errors(filename, style_guide)
+            reported = self._get_reported_errors(filename)
             failures = expected ^ reported
 
             if not failures:
