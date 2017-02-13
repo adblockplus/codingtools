@@ -12,6 +12,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Adblock Plus.  If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import print_function
 
 import os
@@ -115,15 +116,15 @@ class TestCommand(Command):
 
 
 setup(
-    name='flake8-abp',
+    name='flake8-eyeo',
     version='0.1',
-    py_modules=['flake8_abp'],
+    py_modules=['flake8_eyeo'],
     entry_points={
         'flake8.extension': [
-            'abp.A    = flake8_abp:ASTChecker',
-            'abp.A1   = flake8_abp:check_quotes',
-            'abp.A111 = flake8_abp:check_redundant_parenthesis',
-            'abp.A303 = flake8_abp:check_non_default_encoding',
+            'eyeo.A    = flake8_eyeo:ASTChecker',
+            'eyeo.A1   = flake8_eyeo:check_quotes',
+            'eyeo.A111 = flake8_eyeo:check_redundant_parenthesis',
+            'eyeo.A303 = flake8_eyeo:check_non_default_encoding',
         ],
     },
     cmdclass={'test': TestCommand}

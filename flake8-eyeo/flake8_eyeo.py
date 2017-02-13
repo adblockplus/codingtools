@@ -32,7 +32,7 @@ try:
 except NameError:
     ascii = repr
 
-__version__ = pkg_resources.get_distribution('flake8-abp').version
+__version__ = pkg_resources.get_distribution('flake8-eyeo').version
 
 DISCOURAGED_APIS = {
     're.match': 're.search',
@@ -481,5 +481,5 @@ def check_redundant_parenthesis(logical_line, tokens):
 if int(flake8.__version__.split('.')[0]) < 3:
     for checker in [ASTChecker, check_non_default_encoding,
                     check_quotes, check_redundant_parenthesis]:
-        checker.name = 'abp'
+        checker.name = 'eyeo'
         checker.version = __version__

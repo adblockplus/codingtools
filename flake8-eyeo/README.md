@@ -1,8 +1,10 @@
-# flake8-abp
+# flake8-eyeo
 
 A [flake8](https://flake8.readthedocs.io) extension that checks for compliance
-with the [Adblock Plus coding style guide](https://adblockplus.org/coding-style#python)
-and some bad practices which flake8 doesn't handle by default.
+with the
+[Adblock Plus coding style guide](https://adblockplus.org/coding-style#python)
+which is used for all eyeo projects, and some bad practices which flake8 doesn't
+handle by default.
 
 
 ## Installation
@@ -13,7 +15,7 @@ Run `python setup.py install`.
 ## Usage
 
 Just run `flake8` (you have to install it seperately) on your source files.
-After installation the `flake8-abp` extension is active by default.
+After installation the `flake8-eyeo` extension is active by default.
 
 
 ## Warnings
