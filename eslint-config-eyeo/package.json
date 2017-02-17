@@ -1,0 +1,28 @@
+{
+  "name": "eslint-config-eyeo",
+  "version": "1.0.0",
+  "description": "ESLint configuration as used by eyeo.",
+  "main": "index.js",
+  "repository": {
+    "type": "hg",
+    "url": "https://hg.adblockplus.org/codingtools"
+  },
+  "keywords": [
+    "eyeo",
+    "adblockplus",
+    "abp",
+    "eslint",
+    "eslintconfig"
+  ],
+  "author": {
+    "name": "eyeo GmbH",
+    "url": "https://eyeo.com/"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://issues.adblockplus.org/"
+  },
+  "peerDependencies": {
+    "eslint": ">= 3.14.1"
+  }
+}
