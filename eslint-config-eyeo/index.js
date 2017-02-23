@@ -43,7 +43,7 @@ module.exports = {
     "keyword-spacing": "error",
     "linebreak-style": "error",
     "lines-around-directive": "error",
-    "max-len": ["error", 80, {ignoreUrls: true}],
+    "max-len": ["error", 80, {ignoreUrls: true, ignoreRegExpLiterals: true}],
     "new-parens": "error",
     "no-array-constructor": "error",
     "no-caller": "error",
