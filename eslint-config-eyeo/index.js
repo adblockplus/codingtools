@@ -54,7 +54,7 @@ module.exports = {
     "no-constant-condition": ["error", {checkLoops: false}],
     "no-control-regex": "off",
     "no-else-return": "error",
-    "no-empty": ["error", {allowEmptyCatch: true}],
+    "no-empty": "off",
     "no-eval": "error",
     "no-extra-bind": "error",
     "no-extra-label": "error",
