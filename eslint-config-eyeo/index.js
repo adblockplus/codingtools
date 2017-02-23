@@ -69,7 +69,7 @@ module.exports = {
     "no-shadow": "error",
     "no-trailing-spaces": "error",
     "no-unneeded-ternary": "error",
-    "no-unused-vars": "off",
+    "no-unused-vars": ["error", {vars: "local", args: "none"}],
     "no-useless-computed-key": "error",
     "no-useless-concat": "error",
     "no-useless-escape": "error",
