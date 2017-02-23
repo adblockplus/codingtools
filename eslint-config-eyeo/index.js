@@ -51,6 +51,7 @@ module.exports = {
     "no-catch-shadow": "error",
     "no-cond-assign": "off",
     "no-console": ["error", {allow: ["warn", "error", "trace"]}],
+    "no-constant-condition": ["error", {checkLoops: false}],
     "no-control-regex": "off",
     "no-else-return": "error",
     "no-empty": ["error", {allowEmptyCatch: true}],
