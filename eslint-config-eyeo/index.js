@@ -35,7 +35,6 @@ module.exports = {
     "comma-spacing": "error",
     "comma-style": "error",
     "computed-property-spacing": "error",
-    "curly": ["error", "multi-or-nest"],
     "eol-last": "error",
     "func-call-spacing": "error",
     "indent": ["error", 2, {SwitchCase: 1, ArrayExpression: "first"}],
