@@ -84,7 +84,7 @@ module.exports = {
     }],
     "one-var": ["error", "never"],
     "operator-assignment": "error",
-    "operator-linebreak": "error",
+    "operator-linebreak": ["error", "after"],
     "padded-blocks": ["error", "never"],
     "prefer-arrow-callback": "error",
     "prefer-destructuring": ["error", {array: false}],
