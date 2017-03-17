@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-eyeo",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ESLint configuration as used by eyeo.",
   "main": "index.js",
   "repository": {
