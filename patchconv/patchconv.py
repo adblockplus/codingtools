@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # This file is part of Adblock Plus <https://adblockplus.org/>,
 # Copyright (C) 2006-2017 eyeo GmbH
 #
@@ -74,3 +76,7 @@ def rietveld_to_git(lines):
 def main():
     for line in rietveld_to_git(sys.stdin):
         sys.stdout.write(line)
+
+
+if __name__ == '__main__':
+    main()
