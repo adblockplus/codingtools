@@ -17,7 +17,7 @@ applied using Git or Mercurial.
 
 Install directly from Mercurial repository using pip:
 
-    $ pip install 'hg+https://hg.[Dadblockplus.org/codingtools#egg=patchconv&subdirectory=patchconv'
+    $ pip install 'hg+https://hg.adblockplus.org/codingtools#egg=patchconv&subdirectory=patchconv'
 
 ## Usage
 
