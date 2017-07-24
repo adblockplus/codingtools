@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-eyeo",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "ESLint configuration as used by eyeo.",
   "main": "index.js",
   "repository": {
@@ -23,6 +23,6 @@
     "url": "https://issues.adblockplus.org/"
   },
   "peerDependencies": {
-    "eslint": ">= 3.14.1"
+    "eslint": "4"
   }
 }
