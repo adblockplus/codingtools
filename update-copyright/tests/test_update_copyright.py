@@ -14,12 +14,22 @@ from update_copyright import extract_urls, text_replace, hg_commit, main
 data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 
-def create_repo(path):
+@pytest.fixture(scope='session')
+def sample_file(tmpdir_factory):
+    text = '# {}right (C) 2006-2015 eyeo GmbH\n'.format('Copy')
+    text += "value = '{}right (C) 2006-2016 Eyeo GmbH'\n".format('Copy')
+    text += '# {}right (C) 2006-2014 example GmbH'.format('Copy')
+    sample_file = tmpdir_factory.mktemp('sample_dir').join('sample_file.py')
+    sample_file.write(text)
+    return str(sample_file)
+
+
+def create_repo(sample_file, path):
     subprocess.check_call(['hg', 'init', path])
     with open(os.path.join(path, '.hg', 'hgrc'), 'w+') as hgrc:
         set_user = '[ui]\nusername = Test User <test@example.com>'
         hgrc.write(set_user)
-    shutil.copy(os.path.join(data_path, 'sample_file.py'), path)
+    shutil.copy(sample_file, path)
     subprocess.check_call(['hg', 'commit', '-Am', 'Initial commit',
                            '--repository', path])
 
@@ -31,15 +41,15 @@ def temp_dir(tmpdir):
 
 
 @pytest.fixture()
-def temp_repo(tmpdir):
+def temp_repo(sample_file, tmpdir):
     """"Returns a path to a temporary repo containing one sample file"""
     temp_repo = tmpdir.mkdir('tmp_dir')
-    create_repo(str(temp_repo))
+    create_repo(sample_file, str(temp_repo))
     return temp_repo
 
 
 @pytest.fixture()
-def base_dir(tmpdir):
+def base_dir(sample_file, tmpdir):
     """Returns a temporary directory that contains one html page and two
     repositories (one with push access, the other without)"""
     tmp_repo = tmpdir.mkdir('tmp_dir')
@@ -50,8 +60,8 @@ def base_dir(tmpdir):
     repo_2 = os.path.join(temp_dir, 'repo_2')
     os.mkdir(repo_1)
     os.mkdir(repo_2)
-    create_repo(repo_1)
-    create_repo(repo_2)
+    create_repo(sample_file, repo_1)
+    create_repo(sample_file, repo_2)
 
     # Make repo_2 read-only
     with open(os.path.join(repo_2, '.hg/hgrc'), 'w') as hgrc:
@@ -67,11 +77,10 @@ def test_extract_urls():
     assert urls == extract_urls(os.path.join(data_url, 'hg_page.html'))
 
 
-def test_text_replacement(temp_repo):
+def test_text_replacement(sample_file, temp_repo):
     updated = 0
-    filename = temp_repo.join('sample_file.py').strpath
-    text_replace(temp_repo.strpath, filename)
-    with open(filename) as file:
+    text_replace(temp_repo.strpath, 'sample_file.py')
+    with open(os.path.join(temp_repo.strpath, 'sample_file.py')) as file:
         text = file.read()
         pattern = re.compile(r'(copyright.*?\d{4})(?:-\d{4})?\s+eyeo gmbh',
                              re.I)
@@ -80,7 +89,7 @@ def test_text_replacement(temp_repo):
             if dates.group(2) == str(datetime.datetime.now().year):
                 updated += 1
 
-        # test that non-eyeo copyright information are left alone
+        # test that non-eyeo copyright information is left alone
         assert '2014 example' in text
     # test for copyright information in both strings and comments
     assert updated == 2
@@ -100,7 +109,7 @@ def test_hg_commit(temp_repo, temp_dir):
     assert 'Noissue - Updated copyright year' in str(log_1.stdout)
 
 
-def test_all(base_dir):
+def test_all(sample_file, base_dir):
     main(urllib.parse.urljoin('file:///', os.path.join(
          base_dir, 'hg_page.html')), None)
 
