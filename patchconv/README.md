@@ -26,6 +26,21 @@ Its interface is simple: it reads from stdin and writes to stdout.
 
     $ patchconv <patch-from-rietveld.diff >git-patch.diff
 
+For additional convenience you can use the provided `rapply.sh` script that
+downloads, converts and applies patches from Rietveld reviews to your local
+working copy. In order to use it, open a review, copy the URL of a `[raw]`
+download link in the top right corner of a patch set overview and then paste it
+into the console:
+
+    $ rapply.sh https://codereview.adblockplus.org/download/issue3322_4433.diff
+
+or, if you've already downloaded the diff to a local file:
+
+    $ rapply.sh issue3322_4433.diff
+
+In both cases you need to be in the directory containing the repository to
+which you are applying the diff.
+
 ## Testing
 
 The tests can be run via [Tox](http://tox.readthedocs.org/)
