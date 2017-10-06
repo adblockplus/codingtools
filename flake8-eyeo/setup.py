@@ -104,10 +104,10 @@ setup(
     py_modules=['flake8_eyeo'],
     entry_points={
         'flake8.extension': [
-            'eyeo.A    = flake8_eyeo:ASTChecker',
-            'eyeo.A1   = flake8_eyeo:check_quotes',
-            'eyeo.A111 = flake8_eyeo:check_redundant_parenthesis',
-            'eyeo.A303 = flake8_eyeo:check_non_default_encoding',
+            'A    = flake8_eyeo:ASTChecker',
+            'A1   = flake8_eyeo:check_quotes',
+            'A111 = flake8_eyeo:check_redundant_parenthesis',
+            'A303 = flake8_eyeo:check_non_default_encoding',
         ],
     },
     cmdclass={'test': TestCommand}

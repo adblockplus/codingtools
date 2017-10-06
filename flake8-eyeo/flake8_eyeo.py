@@ -25,7 +25,6 @@ except ImportError:
     import __builtin__ as builtins
 
 import pkg_resources
-import flake8
 
 try:
     ascii
@@ -474,12 +473,7 @@ def check_redundant_parenthesis(logical_line, tokens):
     return []
 
 
-# With flake8 3, the way the entry points are register in setup.py,
-# they are recognized as a group, and the name and version is detected
-# automatically. For compatibility with flake8 2, however, we need to
-# assign the name and version to each checker individually.
-if int(flake8.__version__.split('.')[0]) < 3:
-    for checker in [ASTChecker, check_non_default_encoding,
-                    check_quotes, check_redundant_parenthesis]:
-        checker.name = 'eyeo'
-        checker.version = __version__
+for checker in [ASTChecker, check_non_default_encoding,
+                check_quotes, check_redundant_parenthesis]:
+    checker.name = 'eyeo'
+    checker.version = __version__
