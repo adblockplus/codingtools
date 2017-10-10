@@ -102,9 +102,10 @@ setup(
     name='flake8-eyeo',
     version='0.1',
     py_modules=['flake8_eyeo'],
+    install_requires=['flake8>=3.2.1'],
     entry_points={
         'flake8.extension': [
-            'A    = flake8_eyeo:ASTChecker',
+            'A    = flake8_eyeo:check_ast',
             'A1   = flake8_eyeo:check_quotes',
             'A111 = flake8_eyeo:check_redundant_parenthesis',
             'A303 = flake8_eyeo:check_non_default_encoding',

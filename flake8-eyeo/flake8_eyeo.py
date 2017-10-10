@@ -353,16 +353,12 @@ class TreeVisitor(ast.NodeVisitor):
         self._visit_hash_keys(node.elts, 'item in set')
 
 
-class ASTChecker(object):
-    def __init__(self, tree, filename):
-        self.tree = tree
+def check_ast(tree):
+    visitor = TreeVisitor()
+    visitor.visit(tree)
 
-    def run(self):
-        visitor = TreeVisitor()
-        visitor.visit(self.tree)
-
-        for node, error in visitor.errors:
-            yield (node.lineno, node.col_offset, error, type(self))
+    for node, error in visitor.errors:
+        yield (node.lineno, node.col_offset, error, None)
 
 
 def check_non_default_encoding(physical_line, line_number):
@@ -471,7 +467,7 @@ def check_redundant_parenthesis(logical_line, tokens):
     return []
 
 
-for checker in [ASTChecker, check_non_default_encoding,
+for checker in [check_ast, check_non_default_encoding,
                 check_quotes, check_redundant_parenthesis]:
     checker.name = 'eyeo'
     checker.version = __version__
