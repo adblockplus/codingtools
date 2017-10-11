@@ -1,9 +1,13 @@
+x = object()
+
+
 def make_dict():
     return {
         'foo': None,
         'bar': None,
         0: None,
         1: None,
+        x: None,
 
         # A207
         'foo': None,
@@ -13,6 +17,10 @@ def make_dict():
         0.0: None,
         # A207
         True: None,
+        # A207
+        x: None,
+        # A207
+        str('foo'): None,
     }
 
 
@@ -22,6 +30,7 @@ def make_set():
         'bar',
         0,
         1,
+        x,
 
         # A207
         'foo',
@@ -31,4 +40,8 @@ def make_set():
         0.0,
         # A207
         True,
+        # A207
+        x,
+        # A207
+        str('foo'),
     }

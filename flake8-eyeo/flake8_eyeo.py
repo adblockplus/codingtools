@@ -45,15 +45,16 @@ LEAVE_BLOCK = (ast.Return, ast.Raise, ast.Continue, ast.Break)
 VOLATILE = object()
 
 
-def evaluate(node):
+def evaluate(node, namespace):
     try:
-        return eval(compile(ast.Expression(node), '', 'eval'), {})
+        return eval(compile(ast.Expression(node), '', 'eval'), namespace)
     except Exception:
         return VOLATILE
 
 
 def is_const(node):
-    return evaluate(node) is not VOLATILE
+    namespace = {'__builtins__': {'True': True, 'False': False, 'None': None}}
+    return evaluate(node, namespace) is not VOLATILE
 
 
 def get_identifier(node):
@@ -335,8 +336,9 @@ class TreeVisitor(ast.NodeVisitor):
 
     def _visit_hash_keys(self, nodes, what):
         keys = []
+        namespace = collections.defaultdict(object, vars(builtins))
         for node in nodes:
-            key = evaluate(node)
+            key = evaluate(node, namespace)
             if key is VOLATILE:
                 continue
 

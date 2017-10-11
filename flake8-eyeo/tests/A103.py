@@ -24,3 +24,7 @@ def compare_literals():
 
 def compare_variables(a, b, c, d):
     return (a, b) == (c, d) or a == b
+
+
+def compare_builtin(x):
+    return dir == x
