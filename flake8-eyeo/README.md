@@ -32,7 +32,6 @@ After installation the `flake8-eyeo` extension is active by default.
 * `A107`: `%` operator used for string formatting; this mechanism
           has been superseded by the string's `format()` method
 * `A108`: `+` operator to concatenate more than two strings
-* `A109`: Use triple double quotes for docstrings as recommended in PEP-257
 * `A110`: Write single-line string literals as represented by `repr()`
 * `A111`: Redundant parantheses around if or while condition
 * `A112`: Use `from __future__ import unicode_literals` instead of

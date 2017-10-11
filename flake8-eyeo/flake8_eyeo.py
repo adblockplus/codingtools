@@ -396,11 +396,9 @@ def check_quotes(logical_line, tokens, previous_logical, checker_state):
 
             if first_token and re.search(r'^(?:(?:def|class)\s|$)',
                                          previous_logical):
-                if quote != '"""':
-                    yield (start, 'A109 use triple double '
-                                  'quotes for docstrings')
+                pass  # Ignore docstrings
             elif start[0] != end[0]:
-                pass
+                pass  # Ignore multiline strings
             elif 'r' in prefixes:
                 if quote != "'" and not (quote == '"' and "'" in text):
                     yield (start, 'A110 use single quotes for raw string')

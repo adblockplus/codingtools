@@ -39,6 +39,7 @@ def rietveld_to_git(lines):
         lines -- lines of the patch.
     Returns:
         Lines of the converted patch.
+
     """
     state = NORMAL
     new_name = None
