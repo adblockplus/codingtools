@@ -57,7 +57,7 @@ try:
     noop()
     # A204
     pass
-except:
+except Exception:
     noop()
     # A204
     pass

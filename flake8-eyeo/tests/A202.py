@@ -19,7 +19,7 @@ def dead_code_after_return_in_try():
         return
         # A202
         noop()
-    except:
+    except Exception:
         return
         # A202
         noop()

@@ -21,7 +21,7 @@ def else_after_raise():
 def else_after_return_in_except():
     try:
         noop()
-    except:
+    except Exception:
         return
     else:
         # A206

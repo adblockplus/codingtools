@@ -23,7 +23,7 @@ else:
 try:
     # A205
     pass
-except:
+except Exception:
     pass
 finally:
     # A205
