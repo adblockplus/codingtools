@@ -102,7 +102,13 @@ class TreeVisitor(ast.NodeVisitor):
                 continue
             if docstring and i == 0 and isinstance(node.value, ast.Str):
                 continue
-            if isinstance(node.value, (ast.Call, ast.Yield)):
+
+            non_literal_expr_nodes = (ast.Call, ast.Yield)
+            try:
+                non_literal_expr_nodes += (ast.YieldFrom,)
+            except AttributeError:
+                pass
+            if isinstance(node.value, non_literal_expr_nodes):
                 continue
 
             self.errors.append((node, 'A203 unused expression'))
