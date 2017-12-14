@@ -1,0 +1,31 @@
+{
+  "name": "stylelint-config-eyeo",
+  "version": "1.0.0",
+  "description": "Stylelint configuration as used by eyeo.",
+  "main": "index.js",
+  "repository": {
+    "type": "hg",
+    "url": "https://hg.adblockplus.org/codingtools"
+  },
+  "keywords": [
+    "eyeo",
+    "adblockplus",
+    "abp",
+    "stylelint",
+    "stylelintconfig"
+  ],
+  "author": {
+    "name": "eyeo GmbH",
+    "url": "https://eyeo.com/"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://issues.adblockplus.org/"
+  },
+  "dependencies": {
+    "stylelint-config-recommended": "^1.0.0"
+  },
+  "peerDependencies": {
+    "stylelint": "^8.0.0"
+  }
+}
