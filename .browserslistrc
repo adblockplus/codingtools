@@ -1,0 +1,34 @@
+# This file is part of codingtools.
+#
+# codingtools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# codingtools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with codingtools. If not, see <http://www.gnu.org/licenses/>.
+
+# The following configuration was designed to cover many browsers using few
+# for the sake of efficiency. "no-js" and "legacy support for adblockplus
+# extension" should be usable on adblockplus home, download, and support pages.
+
+# Last 2 versions of major browsers >= 1% of our stats
+Chrome last 2 versions
+Firefox last 2 versions
+Edge last 2 versions
+
+# Legacy desktop support >= 1% of our stats
+Explorer >= 11
+
+# Legacy mobile support >= 1% of our stats
+Android >= 4.0.3
+
+# Legacy support for adblockplus extension
+# @see https://adblockplus.org/requirements
+# IE 8
+# Safari 6
