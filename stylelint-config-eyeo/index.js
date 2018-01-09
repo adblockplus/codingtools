@@ -40,7 +40,8 @@ module.exports = {
 
     // Separate rules by an empty line
     "rule-empty-line-before": ["always", {
-      "ignore": ["after-comment", "first-nested"]
+      "ignore": ["after-comment"],
+      "except": ["first-nested"]
     }],
 
     // Use double over single quotation marks
