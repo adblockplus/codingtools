@@ -68,6 +68,13 @@ def get_statement(node):
     return type(node).__name__.lower()
 
 
+def get_descendant_nodes(node):
+    for child in ast.iter_child_nodes(node):
+        yield (child, node)
+        for nodes in get_descendant_nodes(child):
+            yield nodes
+
+
 class TreeVisitor(ast.NodeVisitor):
     Scope = collections.namedtuple('Scope', ['node', 'names', 'globals'])
 
@@ -424,55 +431,67 @@ def check_quotes(logical_line, tokens, previous_logical, checker_state):
         first_token = False
 
 
-def check_redundant_parenthesis(logical_line, tokens):
-    start_line = tokens[0][2][0]
-    level = 0
-    statement = None
+def check_redundant_parenthesis(tree, lines, file_tokens):
+    orig = ast.dump(tree)
+    nodes = get_descendant_nodes(tree)
+    stack = []
 
-    for i, (kind, token, _, end, _) in enumerate(tokens):
-        if kind == tokenize.INDENT or kind == tokenize.DEDENT:
+    for i, (kind, token, _, _, _) in enumerate(file_tokens):
+        if kind != tokenize.OP:
             continue
 
-        if statement is None:
-            # logical line doesn't start with an if, elif or while statement
-            if kind != tokenize.NAME or token not in {'if', 'elif', 'while'}:
-                break
+        if token == '(':
+            stack.append(i)
+        elif token == ')':
+            start = stack.pop()
+            sample = lines[:]
 
-            # expression doesn't start with parenthesis
-            next_token = tokens[i + 1]
-            if next_token[:2] != (tokenize.OP, '('):
-                break
+            for pos in [i, start]:
+                _, _, (lineno, col1), (_, col2), _ = file_tokens[pos]
+                lineno -= 1
+                sample[lineno] = (sample[lineno][:col1] +
+                                  sample[lineno][col2:])
 
-            # expression is empty tuple
-            if tokens[i + 2][:2] == (tokenize.OP, ')'):
-                break
+            try:
+                modified = ast.parse(''.join(sample))
+            except SyntaxError:
+                # Parentheses syntactically required.
+                continue
 
-            statement = token
-            pos = next_token[2]
-            continue
+            # Parentheses logically required.
+            if orig != ast.dump(modified):
+                continue
 
-        # expression ends on a different line, parenthesis are necessary
-        if end[0] > start_line:
-            break
-
-        if kind == tokenize.OP:
-            if token == ',':
-                # expression is non-empty tuple
-                if level == 1:
+            pos = file_tokens[start][2]
+            while True:
+                node, parent = next(nodes)
+                if pos < (getattr(node, 'lineno', -1),
+                          getattr(node, 'col_offset', -1)):
                     break
-            elif token == '(':
-                level += 1
-            elif token == ')':
-                level -= 1
-                if level == 0:
-                    # outer parenthesis closed before end of expression
-                    if tokens[i + 1][:2] != (tokenize.OP, ':'):
-                        break
 
-                    return [(pos, 'A111 redundant parenthesis for {} '
-                                  'statement'.format(statement))]
+            # Allow redundant parentheses for readability,
+            # when creating tuples (but not when unpacking variables),
+            # nested operations and comparisons inside assignments.
+            is_tuple = (
+                isinstance(node, ast.Tuple) and not (
+                    isinstance(parent, (ast.For, ast.comprehension)) and
+                    node == parent.target or
+                    isinstance(parent, ast.Assign) and
+                    node in parent.targets
+                )
+            )
+            is_nested_op = (
+                isinstance(node, (ast.BinOp, ast.BoolOp)) and
+                isinstance(parent, (ast.BinOp, ast.BoolOp))
+            )
+            is_compare_in_assign = (
+                isinstance(parent, (ast.Assign, ast.keyword)) and
+                any(isinstance(x, ast.Compare) for x in ast.walk(node))
+            )
+            if is_tuple or is_nested_op or is_compare_in_assign:
+                continue
 
-    return []
+            yield (pos[0], pos[1], 'A111 redundant parenthesis', None)
 
 
 for checker in [check_ast, check_non_default_encoding,

@@ -33,7 +33,7 @@ After installation the `flake8-eyeo` extension is active by default.
           has been superseded by the string's `format()` method
 * `A108`: `+` operator to concatenate more than two strings
 * `A110`: Write single-line string literals as represented by `repr()`
-* `A111`: Redundant parantheses around if or while condition
+* `A111`: Redundant parantheses
 * `A112`: Use `from __future__ import unicode_literals` instead of
           prefixing literals with "u"
 
