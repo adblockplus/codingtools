@@ -23,7 +23,8 @@
     "url": "https://issues.adblockplus.org/"
   },
   "dependencies": {
-    "stylelint-config-recommended": "^1.0.0"
+    "stylelint-config-recommended": "^1.0.0",
+    "stylelint-order": "^0.7.0"
   },
   "peerDependencies": {
     "stylelint": "^8.0.0"

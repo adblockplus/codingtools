@@ -19,6 +19,9 @@
 
 module.exports = {
   extends: "stylelint-config-recommended",
+  plugins: [
+    "stylelint-order"
+  ],
   rules: {
     // Opening braces go on their own line
     "block-opening-brace-newline-before": "always-multi-line",
@@ -66,6 +69,10 @@ module.exports = {
     // Avoid qualifying ID and class names with type selectors
     "selector-no-qualifying-type": [true, {
       "ignore": ["attribute"]
-    }]
+    }],
+
+    // CSS rule declaration order should follow the WordPress CSS
+    // Coding Standards
+    "order/properties-order": require("./css-properties-order")
   }
 };

@@ -43,3 +43,7 @@ you'll need to use the absolute path to stylelint-config-eyeo in your config.
 
 For projects without a Stylelint configuration you can create your own
 personal configuration in `~/.stylelintrc.json`.
+
+## License
+
+- CSS property order in `css-properties-order.js` based on [grunt-wp-css](https://github.com/cedaro/grunt-wp-css/blob/develop/tasks/config/default.json)
