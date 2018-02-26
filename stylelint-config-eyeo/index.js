@@ -71,6 +71,11 @@ module.exports = {
       "ignore": ["attribute"]
     }],
 
+    // Font weight values should be specified in relative or numerical notation
+    "font-weight-notation": ["numeric", {
+      "ignore": ["relative"]
+    }],
+
     // CSS rule declaration order should follow the WordPress CSS
     // Coding Standards
     "order/properties-order": require("./css-properties-order")
