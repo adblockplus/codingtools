@@ -8,8 +8,6 @@ which is used for all eyeo projects.
 
     npm install -g stylelint
 
-This command requires administrator privileges so you might need to use `sudo`.
-
 Next, either install stylelint-config-eyeo within your project. For example:
 
     npm install --save-dev stylelint-config-eyeo

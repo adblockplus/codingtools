@@ -8,8 +8,6 @@ which is used for all eyeo projects.
 
     npm install -g eslint eslint-config-eyeo
 
-This command requires administrator privileges so you might need to use `sudo`.
-
 ## Usage
 
 To lint a JavaScript file using ESLint you run the `eslint` command with the
