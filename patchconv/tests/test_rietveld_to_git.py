@@ -65,7 +65,7 @@ def test_convert(patch_data):
 
 def test_script():
     process = subprocess.Popen(
-        ['patchconv'], stdin=subprocess.PIPE, stdout=subprocess.PIPE
+        ['patchconv'], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
     )
     in_patch = '''Index: README.txt
 ===================================================================

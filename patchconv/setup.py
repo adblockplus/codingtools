@@ -21,6 +21,6 @@ setup(
     version='0.1',
     py_modules=['patchconv'],
     entry_points={
-        'console_scripts': ['patchconv=patchconv:main']
-    }
+        'console_scripts': ['patchconv=patchconv:main'],
+    },
 )

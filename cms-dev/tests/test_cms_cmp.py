@@ -52,7 +52,7 @@ def cms(tmpdir_factory):
     generate = root.mkdir('cms').mkdir('bin').join('generate_static_pages.py')
     generate.write('\n'.join([
         'import sys, shutil',
-        'shutil.copytree(sys.argv[1], sys.argv[2])'
+        'shutil.copytree(sys.argv[1], sys.argv[2])',
     ]))
     hg('init', str(root))
     hg('commit', '-A', '-m', 'x', repo=str(root))
@@ -60,7 +60,7 @@ def cms(tmpdir_factory):
     hg('commit', '-A', '-m', 'y', repo=str(root))
     generate.write(
         generate.read() +
-        '\nshutil.copy(sys.argv[2] + "/foo", sys.argv[2] + "/bar")'
+        '\nshutil.copy(sys.argv[2] + "/foo", sys.argv[2] + "/bar")',
     )
     hg('commit', '-m', 'z', repo=str(root))
     hg('bookmark', '-r', '0', 'master', repo=str(root))

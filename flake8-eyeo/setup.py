@@ -111,5 +111,5 @@ setup(
             'A303 = flake8_eyeo:check_non_default_encoding',
         ],
     },
-    cmdclass={'test': TestCommand}
+    cmdclass={'test': TestCommand},
 )
