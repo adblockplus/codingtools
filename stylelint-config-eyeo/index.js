@@ -32,7 +32,6 @@ module.exports = {
 
     // Use a space between the last selector and the declaration block
     "block-opening-brace-space-before": "always-single-line",
-    "block-closing-brace-space-after": "always-single-line",
 
     // Use a space after a property name’s colon
     "declaration-colon-space-after": "always",
