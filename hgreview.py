@@ -11,8 +11,11 @@ SERVER = 'https://codereview.adblockplus.org'
 UPLOADTOOL_URL = SERVER + '/static/upload.py'
 
 cmdtable = {}
-command = cmdutil.command(cmdtable)
-
+try:
+    command = cmdutil.command(cmdtable)
+except AttributeError:
+    from mercurial import registrar
+    command = registrar.command(cmdtable)
 
 @command('review',
          [
