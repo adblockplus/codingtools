@@ -23,6 +23,6 @@
     "url": "https://issues.adblockplus.org/"
   },
   "peerDependencies": {
-    "eslint": "4"
+    "eslint": "^5.1"
   }
 }
