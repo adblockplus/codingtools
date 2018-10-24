@@ -67,7 +67,8 @@ def review(ui, repo, *paths, **opts):
         if not opts.get('title') and not opts.get('change'):
             opts['title'] = ui.prompt('New review title: ', '')
         elif not opts.get('title'):
-            fulltitle = repo[opts['change']].description()
+            rev_no = repo.revs(opts['change']).first()
+            fulltitle = repo[rev_no].description()
             opts['title'] = fulltitle.rstrip().split('\n')[0]
 
         if not opts['title'].strip():
