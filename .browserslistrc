@@ -30,5 +30,5 @@ Android >= 4.0.3
 
 # Legacy support for adblockplus extension
 # @see https://adblockplus.org/requirements
-# IE 8
-# Safari 6
+# IE 9
+# Safari 10
