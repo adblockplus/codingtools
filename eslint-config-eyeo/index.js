@@ -65,6 +65,7 @@ module.exports = {
     "no-lone-blocks": "error",
     "no-lonely-if": "error",
     "no-multi-spaces": ["error", {ignoreEOLComments: true}],
+    "no-multiple-empty-lines": ["error", {"max": 1}],
     "no-new-func": "error",
     "no-new-object": "error",
     "no-proto": "error",
